@@ -32,7 +32,7 @@
 (defun current-process ()
   "Return the object representing the current process"
   #+lispworks mp:*current-process* 
-  #+abcl (ext:current-thread)
+  #+abcl (threads:current-thread)
   #+openmcl ccl:*current-process*
   #+sb-thread sb-thread:*current-thread*
   #+allegro sys:*current-process*
@@ -41,7 +41,7 @@
 (defun kill-process (process)
   "Kill the process represented by the object process"
   #+lispworks (mp:process-kill process)
-  #+abcl (ext:destroy-thread process)
+  #+abcl (threads:destroy-thread process)
   #+openmcl (ccl:process-kill process)
   #+sb-thread (sb-thread:terminate-thread process)
   #+allegro (mp:process-kill process)
@@ -50,7 +50,7 @@
 (defun run-process (name function &rest arguments)
   "Create and run a new process with name, executing function on arguments"
   #+lispworks (apply #'mp:process-run-function name '(:priority 3) function arguments)
-  #+abcl (ext:make-thread #'(lambda () (apply function arguments)) :name name)
+  #+abcl (threads:make-thread #'(lambda () (apply function arguments)) :name name)
   #+openmcl (apply #'ccl:process-run-function name function arguments)
   #+allegro (apply #'mp:process-run-function name function arguments)
   #+sb-thread (sb-thread:make-thread #'(lambda () (apply function arguments)) :name name)
@@ -62,7 +62,7 @@
 (defun all-processes ()
   "Return a list of all processes currently running"
   #+lispworks (mp:list-all-processes)
-  #+abcl (ext:mapcar-threads #'identity)
+  #+abcl (threads:mapcar-threads #'identity)
   #+openmcl (ccl:all-processes)
   #+sb-thread (sb-thread:list-all-threads)
   #+allegro sys:*all-processes*
@@ -149,7 +149,7 @@
                :announce t
                :wait t
                :process-name name)
-  #+abcl (ext:make-thread
+  #+abcl (threads:make-thread
 	  #'(lambda ()
 	      (let ((server-socket (ext:make-server-socket port)))
 		(unwind-protect
@@ -254,7 +254,7 @@
 (defun make-process-lock (name)
   "Create a named process lock object"
   #+lispworks (mp:make-lock :name name)
-  #+abcl (ext:make-thread-lock)
+  #+abcl (threads:make-thread-lock)
   #+openmcl (ccl:make-lock name)
   #+allegro (mp:make-process-lock :name name)
   #+sb-thread (sb-thread:make-mutex :name name)
@@ -269,7 +269,7 @@
   ;; `(mp:with-lock (,lock (format nil "Waiting for ~s" (lock-name ,lock)) 5) ,@body)
   ;; if the lock cannot be claimed in 5s, nil is returned: test it and throw a condition ?
   #+lispworks `(mp:with-lock (,lock) ,@body)
-  #+abcl `(ext:with-thread-lock (,lock) ,@body)
+  #+abcl `(threads:with-thread-lock (,lock) ,@body)
   #+openmcl `(ccl:with-lock-grabbed (,lock) ,@body)
   #+allegro `(mp:with-process-lock (,lock) ,@body)
   #+sb-thread `(sb-thread:with-recursive-lock (,lock) ,@body)
