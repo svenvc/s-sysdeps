@@ -15,7 +15,7 @@
 (defsystem :s-sysdeps
   :name "S-SYSDEPS"
   :author "Sven Van Caekenberghe <svc@mac.com>"
-  :version "1"
+  :version "2"
   :maintainer "Sven Van Caekenberghe <svc@mac.com>"
   :licence "Lesser Lisp General Public License (LLGPL)"
   :description "An abstraction layer over platform dependent functionality"
@@ -25,7 +25,8 @@
   ((:module
     :src 
     :components ((:file "package")
-                 #+clisp (:file "bivalent-streams" :depends-on ("package"))
-                 (:file "sysdeps" :depends-on ("package" #+clisp "bivalent-streams"))))))
+                 (:file "sysdeps"))))
+
+  :depends-on (:usocket :usocket-server :bordeaux-threads))
 
 ;;;; eof
