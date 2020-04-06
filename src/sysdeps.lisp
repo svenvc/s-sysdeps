@@ -70,7 +70,7 @@
 			 :in-new-thread t
 			 :name name
 			 ;; we must use :default on SBCL to get a bivalent stream
-			 :elment-type :default))
+			 :element-type :default))
 
 (defun stop-server (name)
   "Stop a named server"
