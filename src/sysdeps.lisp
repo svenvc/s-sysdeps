@@ -68,6 +68,7 @@
 			 connection-handler
 			 '()
 			 :in-new-thread t
+			 :multi-threading t
 			 :name name
 			 ;; we must use :default on SBCL to get a bivalent stream
 			 :element-type :default))
