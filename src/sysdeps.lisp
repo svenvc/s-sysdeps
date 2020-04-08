@@ -53,7 +53,7 @@
   "Get the value of a socket stream property, one of :remote-host :remote-port :local-host :local-port"
   (declare (ignore socket-stream))
   ; this only works while usocket:socket-server's handler is running
-  (cond ((eql property :remote-host) usocket:*remote-host*)
+  (cond ((eql property :remote-host) (format nil "~{~s~^.~}" (concatenate 'list usocket:*remote-host*)))
 	((eql property :remote-port) usocket:*remote-port*)
 	(t nil)))
 
