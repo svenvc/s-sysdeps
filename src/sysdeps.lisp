@@ -63,7 +63,7 @@
   "Start a server process with name, listening on port, delegating to connection-handler with stream as argument"
   ;; note that in the handler, the thread is already spawned
   ;; both the thread and the stream will be closed after the handler returns
-  (usocket:socket-server "localhost"
+  (usocket:socket-server usocket:*wildcard-host*
 			 port
 			 connection-handler
 			 '()
