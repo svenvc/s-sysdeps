@@ -73,11 +73,12 @@
 			 ;; we must use :default on SBCL to get a bivalent stream
 			 :element-type :default))
 
-(defun stop-server (name)
-  "Stop a named server"
+(defun stop-process (name)
+  "Stop a named process by destroying it"
   (let ((thread (find name (bt:all-threads) :key #'bt:thread-name :test #'equal)))
-    (when thread (bt:destroy-thread thread))
-    name))
+    (when thread
+      (bt:destroy-thread thread)
+      name)))
 
 ;; working with process locks
 

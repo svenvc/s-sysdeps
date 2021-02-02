@@ -17,6 +17,7 @@
    #:current-process
    #:kill-process
    #:run-process
+   #:stop-process
    #:all-processes
    #:start-standard-server
    #:open-socket-stream
